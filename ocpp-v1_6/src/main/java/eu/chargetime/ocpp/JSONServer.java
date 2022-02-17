@@ -34,6 +34,7 @@ import eu.chargetime.ocpp.wss.WssFactoryBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 import javax.net.ssl.SSLContext;
@@ -179,5 +180,10 @@ public class JSONServer implements IServerAPI {
   public CompletionStage<Confirmation> send(UUID session, Request request)
       throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
     return server.send(session, request);
+  }
+
+  @Override
+  public Map<UUID, ISession> getSessions() {
+    return server.getSessions();
   }
 }

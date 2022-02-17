@@ -16,8 +16,12 @@ import eu.chargetime.ocpp.model.CallMessage;
 import eu.chargetime.ocpp.model.CallResultMessage;
 import eu.chargetime.ocpp.model.Message;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +108,17 @@ public class JSONCommunicator extends Communicator {
     public ZonedDateTime deserialize(
         JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
         throws JsonParseException {
-      return ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString());
+      ZonedDateTime parsed;
+      try {
+        parsed = ZonedDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString());
+      } catch (DateTimeParseException e) {
+        parsed = ZonedDateTime.from(
+                LocalDateTime.parse(jsonElement.getAsJsonPrimitive().getAsString(), DateTimeFormatter.ISO_DATE_TIME)
+                        .atZone(ZoneId.of("Europe/Istanbul"))
+        );
+      }
+
+      return parsed;
     }
   }
 

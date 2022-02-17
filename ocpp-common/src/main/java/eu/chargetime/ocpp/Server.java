@@ -216,4 +216,8 @@ public class Server {
       session.close();
     }
   }
+
+  public Map<UUID, ISession> getSessions() {
+    return sessions;
+  }
 }

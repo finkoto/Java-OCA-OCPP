@@ -29,6 +29,8 @@ import eu.chargetime.ocpp.feature.profile.Profile;
 import eu.chargetime.ocpp.feature.profile.ServerCoreProfile;
 import eu.chargetime.ocpp.model.Confirmation;
 import eu.chargetime.ocpp.model.Request;
+
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
 
@@ -81,5 +83,10 @@ public class SOAPServer implements IServerAPI {
   public CompletionStage<Confirmation> send(UUID session, Request request)
       throws OccurenceConstraintException, UnsupportedFeatureException, NotConnectedException {
     return server.send(session, request);
+  }
+
+  @Override
+  public Map<UUID, ISession> getSessions() {
+    return server.getSessions();
   }
 }
