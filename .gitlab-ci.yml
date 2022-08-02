@@ -1,0 +1,21 @@
+image: maven
+
+stages:
+  - build
+
+build-java-oca-ocpp:
+  stage: build
+  when: always
+  tags:
+    - docker.socket
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+  services:
+    - docker:dind
+  script:
+    - cd $CI_PROJECT_DIR/ev-csms-chargestation-server
+    - mvn clean install -DskipTests=true
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/Java-OCA-OCPP/target/eu.chargetime.ocpp:v1_6:jar:0.5-SNAPSHOT-custom.jar
